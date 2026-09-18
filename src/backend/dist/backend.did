@@ -1,0 +1,199 @@
+type Value = 
+ variant {
+   "bool": bool;
+   float: float64;
+   "int": int;
+   "nat": nat;
+   "null";
+   "text": text;
+ };
+type UserRole = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type TurnResult = 
+ record {
+   events: vec TurnEvent;
+   moneyEarned: nat;
+   pollutionRemoved: nat;
+   state: GameState;
+ };
+type TurnEvent = 
+ record {
+   amount: nat;
+   kind: text;
+   message: text;
+ };
+type TurnError = 
+ variant {
+   gameOver;
+   noActionsLeft;
+   noGame;
+   unknownTool: text;
+ };
+type ToolUpgrade = 
+ record {
+   id: text;
+   level: nat;
+ };
+type Timestamp = int;
+type ShopItemKind = 
+ variant {
+   npc;
+   tool;
+ };
+type ShopItem = 
+ record {
+   description: text;
+   id: text;
+   kind: ShopItemKind;
+   name: text;
+   owned: nat;
+   power: nat;
+   price: nat;
+ };
+type ShopError = 
+ variant {
+   gameOver;
+   insufficientFunds: record {
+                        available: nat;
+                        required: nat;
+                      };
+   unknownItem: text;
+ };
+type Result__1 = 
+ record {
+   hasMore: bool;
+   rows: vec vec Cell;
+ };
+type Result_3 = 
+ variant {
+   err: Error;
+   ok;
+ };
+type Result_2 = 
+ variant {
+   err: TurnError;
+   ok: TurnResult;
+ };
+type Result_1 = 
+ variant {
+   err: NewGameError;
+   ok: GameState;
+ };
+type Result = 
+ variant {
+   err: ShopError;
+   ok: GameState;
+ };
+type RankingView = 
+ record {
+   callerEntry: opt RankingEntry;
+   callerRank: opt nat;
+   entries: vec RankingEntry;
+ };
+type RankingEntry = 
+ record {
+   cityName: text;
+   player: PlayerId;
+   totalRemoved: nat;
+   turn: nat;
+ };
+type PlayerId = principal;
+type Npc = 
+ record {
+   count: nat;
+   id: text;
+ };
+type NewGameError = variant {invalidCity;};
+type GameStatus = 
+ variant {
+   lost;
+   playing;
+   won;
+ };
+type GameState = 
+ record {
+   actionsLeft: nat;
+   city: City;
+   initialPollution: nat;
+   money: nat;
+   npcs: vec Npc;
+   pollution: nat;
+   status: GameStatus;
+   tools: vec ToolUpgrade;
+   totalRemoved: nat;
+   turn: nat;
+   updatedAt: Timestamp;
+ };
+type Error = 
+ variant {
+   AmbiguousAttribute: record {
+                         field: text;
+                         sources: vec text;
+                       };
+   FrontendOriginMismatch: record {
+                             expected: vec text;
+                             got: text;
+                           };
+   FrontendOriginsNotConfigured;
+   MalformedCandid;
+   MissingField: text;
+   MixedSsoSources: record {
+                      otherKeys: vec text;
+                      ssoKeys: vec text;
+                    };
+   NoAttributes;
+   Stale: record {ageNs: nat;};
+   UnknownNonce;
+   UntrustedSsoSource: record {domain: text;};
+ };
+type CleanAction = 
+ record {
+   times: nat;
+   toolId: text;
+ };
+type City = 
+ record {
+   country: text;
+   latitude: float64;
+   longitude: float64;
+   name: text;
+   region: text;
+ };
+type Cell = 
+ record {
+   name: text;
+   value: Value;
+ };
+service : {
+  _initialize_access_control: () -> ();
+  _internet_identity_sign_in_finish: () -> (Result_3);
+  _internet_identity_sign_in_start: () -> (blob);
+  assignCallerUserRole: (user: principal, role: UserRole) -> ();
+  /// Resolve the current turn with the caller's chosen cleaning actions.
+  endTurn: (actions: vec CleanAction) -> (Result_2);
+  execute: (qJson: text) -> (Result__1) query;
+  /// Static Markdown description of this canister's public API.
+  getApiDoc: () -> (text) query;
+  getCallerUserRole: () -> (UserRole) query;
+  /// Return the caller's saved game, or `null` when none exists.
+  getGame: () -> (opt GameState) query;
+  /// Global leaderboard ordered by total pollution removed, including the
+  /// caller's own rank when they have a saved game.
+  getRanking: (limit: nat) -> (RankingView) query;
+  /// Return the shop catalogue priced for the caller's current state.
+  getShop: () -> (vec ShopItem) query;
+  isCallerAdmin: () -> (bool) query;
+  /// Start a fresh game for the caller with a newly chosen city. Replaces any
+  /// existing saved game. Anonymous callers are rejected.
+  newGame: (city: City, initialPollution: nat, startingMoney: nat) ->
+   (Result_1);
+  /// Buy a tool upgrade or an NPC with the caller's money.
+  purchase: (itemId: text) -> (Result);
+  /// Delete the caller's saved game and start over from the city selection.
+  resetGame: () -> ();
+  schema: () -> (text) query;
+}

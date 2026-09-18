@@ -1,0 +1,243 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   Planeta Limpio — "Aurora Protocol" visual system
+   Dark-first game HUD. Polluted (smog amber) <-> restored (clean
+   cyan-green) duality encoded directly in semantic tokens.
+   ============================================================ */
+
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("/assets/fonts/SpaceGrotesk.woff2") format("woff2");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "DM Sans";
+  src: url("/assets/fonts/DMSans.woff2") format("woff2");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/assets/fonts/GeistMono.woff2") format("woff2");
+  font-display: swap;
+}
+
+@layer base {
+  :root {
+    --font-display: "Space Grotesk";
+    --font-body: "DM Sans";
+    --font-mono: "Geist Mono";
+    --radius: 0.875rem;
+
+    /* --- Dark-first: the game lives at twilight --- */
+    --background: 0.16 0.028 265;
+    --foreground: 0.95 0.012 250;
+    --card: 0.205 0.032 265;
+    --card-foreground: 0.95 0.012 250;
+    --popover: 0.225 0.034 265;
+    --popover-foreground: 0.95 0.012 250;
+
+    /* primary = clean-air cyan-green: the "restored" pole */
+    --primary: 0.78 0.145 178;
+    --primary-foreground: 0.16 0.028 178;
+
+    --secondary: 0.26 0.034 265;
+    --secondary-foreground: 0.88 0.012 250;
+    --muted: 0.255 0.03 265;
+    --muted-foreground: 0.66 0.02 258;
+
+    /* accent = smog amber: the "polluted" pole */
+    --accent: 0.76 0.155 68;
+    --accent-foreground: 0.17 0.03 68;
+
+    --destructive: 0.6 0.21 28;
+    --destructive-foreground: 0.97 0.01 28;
+
+    --success: 0.74 0.17 152;
+    --success-foreground: 0.16 0.03 152;
+    --warning: 0.8 0.15 78;
+    --warning-foreground: 0.18 0.03 78;
+
+    --border: 0.3 0.03 265;
+    --input: 0.32 0.03 265;
+    --ring: 0.78 0.145 178;
+
+    /* chart ramp: smog -> haze -> clean air */
+    --chart-1: 0.68 0.19 45;
+    --chart-2: 0.78 0.15 78;
+    --chart-3: 0.72 0.11 200;
+    --chart-4: 0.78 0.145 178;
+    --chart-5: 0.74 0.17 152;
+
+    --sidebar: 0.185 0.03 265;
+    --sidebar-foreground: 0.95 0.012 250;
+    --sidebar-primary: 0.78 0.145 178;
+    --sidebar-primary-foreground: 0.16 0.028 178;
+    --sidebar-accent: 0.26 0.034 265;
+    --sidebar-accent-foreground: 0.88 0.012 250;
+    --sidebar-border: 0.3 0.03 265;
+    --sidebar-ring: 0.78 0.145 178;
+
+    /* --- Atmosphere: the signature living backdrop --- */
+    --atmosphere-sky: 0.34 0.06 232;
+    --atmosphere-haze: 0.42 0.055 62;
+    --atmosphere-ground: 0.19 0.03 265;
+    --gradient-atmosphere: linear-gradient(
+      180deg,
+      oklch(0.2 0.035 265) 0%,
+      oklch(0.28 0.05 245) 38%,
+      oklch(0.38 0.06 210) 68%,
+      oklch(0.46 0.07 88) 100%
+    );
+    --gradient-restored: linear-gradient(
+      90deg,
+      oklch(0.62 0.13 205) 0%,
+      oklch(0.78 0.145 178) 55%,
+      oklch(0.8 0.17 150) 100%
+    );
+    --gradient-smog: linear-gradient(
+      90deg,
+      oklch(0.58 0.16 40) 0%,
+      oklch(0.72 0.16 62) 60%,
+      oklch(0.8 0.15 82) 100%
+    );
+    --gradient-primary: linear-gradient(
+      135deg,
+      oklch(0.74 0.15 190) 0%,
+      oklch(0.78 0.145 178) 100%
+    );
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* --- Light mode = the restored world: bright, airy, hopeful --- */
+  .light {
+    --background: 0.975 0.012 210;
+    --foreground: 0.19 0.03 250;
+    --card: 1 0.006 210;
+    --card-foreground: 0.19 0.03 250;
+    --popover: 1 0.004 210;
+    --popover-foreground: 0.19 0.03 250;
+
+    --primary: 0.5 0.13 190;
+    --primary-foreground: 0.98 0.01 190;
+
+    --secondary: 0.93 0.02 210;
+    --secondary-foreground: 0.3 0.03 250;
+    --muted: 0.94 0.018 210;
+    --muted-foreground: 0.48 0.03 250;
+
+    --accent: 0.58 0.15 55;
+    --accent-foreground: 0.98 0.01 55;
+
+    --destructive: 0.52 0.2 28;
+    --destructive-foreground: 0.98 0.01 28;
+
+    --success: 0.52 0.15 155;
+    --success-foreground: 0.98 0.01 155;
+    --warning: 0.62 0.14 70;
+    --warning-foreground: 0.98 0.01 70;
+
+    --border: 0.88 0.02 210;
+    --input: 0.88 0.02 210;
+    --ring: 0.5 0.13 190;
+
+    --chart-1: 0.6 0.18 45;
+    --chart-2: 0.68 0.15 78;
+    --chart-3: 0.6 0.12 205;
+    --chart-4: 0.5 0.13 190;
+    --chart-5: 0.52 0.15 155;
+
+    --sidebar: 0.955 0.014 210;
+    --sidebar-foreground: 0.19 0.03 250;
+    --sidebar-primary: 0.5 0.13 190;
+    --sidebar-primary-foreground: 0.98 0.01 190;
+    --sidebar-accent: 0.93 0.02 210;
+    --sidebar-accent-foreground: 0.3 0.03 250;
+    --sidebar-border: 0.88 0.02 210;
+    --sidebar-ring: 0.5 0.13 190;
+
+    --gradient-atmosphere: linear-gradient(
+      180deg,
+      oklch(0.98 0.01 210) 0%,
+      oklch(0.94 0.03 200) 45%,
+      oklch(0.9 0.05 165) 100%
+    );
+  }
+
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display;
+  }
+  /* Numeric HUD readouts align in columns */
+  .font-mono,
+  [data-numeric] {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer utilities {
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+
+  /* Signature: the atmosphere layer behind the game board */
+  .atmosphere {
+    background-image: var(--gradient-atmosphere);
+  }
+
+  .gradient-restored {
+    background-image: var(--gradient-restored);
+  }
+
+  .gradient-smog {
+    background-image: var(--gradient-smog);
+  }
+
+  .gradient-primary {
+    background-image: var(--gradient-primary);
+  }
+
+  .text-gradient-restored {
+    background-image: var(--gradient-restored);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* HUD stat label: small, tracked, uppercase */
+  .hud-label {
+    @apply font-display text-[0.6875rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground;
+  }
+
+  /* Numeric readout: mono, tabular, tight */
+  .hud-value {
+    @apply font-mono text-2xl font-semibold tabular-nums leading-none tracking-tight;
+  }
+
+  .shadow-subtle {
+    box-shadow: 0 1px 2px 0 oklch(0.12 0.03 265 / 0.35);
+  }
+  .shadow-elevated {
+    box-shadow: 0 8px 24px -6px oklch(0.12 0.03 265 / 0.5), 0 2px 6px -2px
+      oklch(0.12 0.03 265 / 0.35);
+  }
+}
+
+/* Respect the user's reduced-motion preference: stop continuous animations. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-pulse-smog {
+    animation: none !important;
+  }
+}

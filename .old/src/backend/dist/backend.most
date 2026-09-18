@@ -1,0 +1,92 @@
+// Version: 4.0.0
+type AccessControlState__201339279 =
+  {
+    var adminAssigned : Bool;
+    userRoles : Map__230067015<Principal, UserRole__91647283>
+  };
+type City__310209866 =
+  {
+    country : Text;
+    latitude : Float;
+    longitude : Float;
+    name : Text;
+    region : Text
+  };
+type City__623876770 =
+  {
+    country : Text;
+    latitude : Float;
+    longitude : Float;
+    name : Text;
+    region : Text
+  };
+type Data__44217153<K, V> = {var count : Nat__227979830; kvs : [var ?(K, V)]};
+type GameState__1042750960 =
+  {
+    actionsLeft : Nat;
+    city : City__310209866;
+    initialPollution : Nat;
+    money : Nat;
+    npcs : [Npc__101895143];
+    pollution : Nat;
+    status : GameStatus__496689868;
+    tools : [ToolUpgrade__1030936426];
+    totalRemoved : Nat;
+    turn : Nat;
+    updatedAt : Timestamp__93733298
+  };
+type GameState__779720938 =
+  {
+    actionsLeft : Nat;
+    city : City__623876770;
+    initialPollution : Nat;
+    money : Nat;
+    npcs : [Npc__373705558];
+    pollution : Nat;
+    status : GameStatus__896267230;
+    tools : [ToolUpgrade__740064934];
+    totalRemoved : Nat;
+    turn : Nat;
+    updatedAt : Int
+  };
+type GameStatus__496689868 = {#lost; #playing; #won};
+type GameStatus__896267230 = {#lost; #playing; #won};
+type Internal__283199666<K, V> =
+  {children : [var ?Node__204828119<K, V>]; data : Data__44217153<K, V>};
+type Leaf__598469445<K, V> = {data : Data__44217153<K, V>};
+type Map__230067015<K, V> = Map__405889023<K, V>;
+type Map__405889023<K, V> = Map__603270868<K, V>;
+type Map__603270868<K, V> =
+  {var root : Node__204828119<K, V>; var size : Nat__227979830};
+type Nat__227979830 = Nat__920180692;
+type Nat__920180692 = Nat;
+type NewActor__203844680 =
+  {
+    accessControlState : AccessControlState__201339279;
+    games : Map__230067015<Principal, GameState__779720938>
+  };
+type Node__204828119<K, V> =
+  {#internal : Internal__283199666<K, V>; #leaf : Leaf__598469445<K, V>};
+type Npc__101895143 = {count : Nat; id : Text};
+type Npc__373705558 = {count : Nat; id : Text};
+type OldActor__1057821239 = {};
+type Timestamp__301639476 = Int;
+type Timestamp__93733298 = Timestamp__301639476;
+type ToolUpgrade__1030936426 = {id : Text; level : Nat};
+type ToolUpgrade__740064934 = {id : Text; level : Nat};
+type UserRole__91647283 = {#admin; #guest; #user};
+{
+  "20260918_120000" : (_old : OldActor__1057821239) -> NewActor__203844680
+}
+actor  {
+  stable accessControlState :
+    {
+      var adminAssigned : Bool;
+      userRoles : Map__230067015<Principal, UserRole__91647283>
+    };
+  stable games :
+    {
+      var root : Node__204828119<Principal, GameState__1042750960>;
+      var size : Nat__227979830
+    }
+};

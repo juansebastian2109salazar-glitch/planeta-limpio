@@ -1,0 +1,20 @@
+{
+  "overview": "Juego de estrategia por turnos en español donde limpias la contaminación atmosférica de una ciudad real para restaurar el planeta.",
+  "features": [
+    "Elige una ciudad real y juega con sus datos reales de calidad del aire",
+    "Limpia la contaminación turno a turno y gana dinero según cuánto reduces la polución",
+    "Compra en la tienda mejores herramientas que limpian más rápido",
+    "Contrata NPCs que limpian el planeta automáticamente cada turno",
+    "Guarda tu progreso con inicio de sesión y compite en el ranking global",
+    "Disfruta de una escena final con el protagonista viendo el mundo restaurado"
+  ],
+  "category": "strategy-game",
+  "tags": [
+    "juego",
+    "estrategia",
+    "medio-ambiente",
+    "contaminaci-n",
+    "espa-ol"
+  ],
+  "last_updated": "2026-09-18T23:09:25.869Z"
+}
